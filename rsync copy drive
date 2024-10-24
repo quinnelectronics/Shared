@@ -1,3 +1,7 @@
 
 
 rsync -avh --progress --checksum /sdb_source/ /sdc_destination/
+
+
+
+
