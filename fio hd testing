@@ -1,1 +1,0 @@
-fio --name=comprehensive_test --ioengine=libaio --rw=randrw --rwmixread=70 --bs=4k --size=10G --direct=1 --numjobs=4 --runtime=300 --time_based --group_reporting --filename=/dev/sda --output=fio_results.txt
