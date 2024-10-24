@@ -1,3 +1,6 @@
+sudo mkdir -p /mnt/pronghorn_share
+sudo mount -t cifs -o username=your_username,password=your_password //PRONGHORN/public /mnt/pronghorn_share
+sudo mount -t cifs -o //PRONGHORN/public /mnt/pronghorn_share
 
 #Quick Test
 
