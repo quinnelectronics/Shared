@@ -1,0 +1,7 @@
+# Add the repository
+curl -sSL https://packages.surface-go.info/keys.asc | sudo apt-key add -
+echo "deb [arch=amd64] https://packages.surface-go.info/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/linux-surface.list
+
+# Update and install the packages
+sudo apt update
+sudo apt install linux-surface
