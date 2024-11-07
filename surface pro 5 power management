@@ -13,14 +13,17 @@ sudo update-grub
 
 
 #getting hot
+
 apt install tlp tlp-rdw
 tlp start
 
 apt install cpufrequtils
 cpufreq-set -g powersave
 
+
 #Still not shutting down
+
 #Update GRUB and reboot:
-sudo nano /etc/default/grub
+nano /etc/default/grub
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi=force"
-sudo update-grub
+update-grub
