@@ -27,3 +27,4 @@ cpufreq-set -g powersave
 nano /etc/default/grub
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi=force"
 update-grub
+# 11/7/24 didn't seem to help the situation
