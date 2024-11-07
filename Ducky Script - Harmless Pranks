@@ -1,13 +1,14 @@
 REM Ducky Script - Harmless Pranks
 
-REM 1. Rickroll Script - Opens a browser window to play a Rickroll video.
-DELAY 500
+REM Rickroll Script - Opens a browser window to play a Rickroll video.
+REM Updated to Shia LaBeouf "Just Do It" Motivational Speech
 GUI r                              REM Opens the Run dialog.
 DELAY 500
-STRING chrome https://www.youtube.com/watch?v=dQw4w9WgXcQ
+REM STRING chrome https://www.youtube.com/watch?v=dQw4w9WgXcQ REM Rickroll
+STRING chrome https://www.youtube.com/watch?v=ZXsQAXx_ao0  REM Opens the "Just Do It" video URL in Chrome.
 ENTER
 
-REM 2. Matrix Effect - Creates a Matrix-like effect by printing random numbers.
+REM Matrix Effect - Creates a Matrix-like effect by printing random numbers.
 DELAY 1000                         REM Wait before starting the next prank.
 GUI r
 DELAY 500
@@ -23,14 +24,7 @@ ENTER
 STRING goto loop
 ENTER
 
-REM 3. Caps Lock Toggle - Repeatedly toggles Caps Lock on and off.
-DELAY 1000
-REPEAT 100
-CAPSLOCK
-DELAY 500
-REPEAT 100
-
-REM 4. Open Multiple Apps - Opens Notepad, Calculator, and Paint in quick succession.
+REM Open Multiple Apps - Opens Notepad, Calculator, and Paint in quick succession.
 DELAY 1000
 GUI r
 DELAY 500
@@ -47,7 +41,7 @@ DELAY 500
 STRING mspaint
 ENTER
 
-REM 5. Fake Error Message - Shows a harmless fake error message.
+REM Fake Error Message - Shows a harmless fake error message.
 DELAY 1000
 GUI r
 DELAY 500
@@ -57,15 +51,15 @@ DELAY 500
 STRING [System.Windows.Forms.MessageBox]::Show('Your computer is infected!', 'Warning', 'OK', 'Error')
 ENTER
 
-REM 6. Flip the Screen - Temporarily flips the screen orientation, then returns it to normal.
+REM Flip the Screen - Temporarily flips the screen orientation, then returns it to normal.
 DELAY 1000
 CONTROL ALT DOWN                    REM Flips the screen upside down.
 DELAY 5000                          REM Leaves it flipped for 5 seconds.
 CONTROL ALT UP                      REM Returns the screen to normal.
 
-REM 7. Make the Computer Talk - Uses PowerShell to make the computer say a message.
+REM Make the Computer Talk - Uses PowerShell to make the computer say a message.
 DELAY 1000
 GUI r
 DELAY 500
-STRING powershell -c (New-Object -ComObject SAPI.SPVoice).Speak('Hello, I am your computer')
+STRING powershell -c (New-Object -ComObject SAPI.SPVoice).Speak('Hello, I am your computer. I am deleting all your files. Hope you have performed a recent backup, because this data is not recoverable. Adios Felicia')
 ENTER
