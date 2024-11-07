@@ -36,6 +36,16 @@ halt
 init 0
 systemctl poweroff
 
+#if none worked
+#identify open processes
+sudo lsof | grep DEL
+
+#kill processes then shutdown
+sudo pkill -u $USER
+sudo shutdown now
+
+#additional
+sudo shutdown -h now acpi=force
 
 
 
