@@ -1,26 +1,26 @@
 https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup
 
 
+#Surface Pro not shutting down
 
-wget -qO - https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc \
-    | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/linux-surface.gpg
+apt update && apt upgrade -y
 
-echo "deb [arch=amd64] https://pkg.surfacelinux.com/debian release main" \
-	| sudo tee /etc/apt/sources.list.d/linux-surface.list
+wget -qO - https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/linux-surface.gpg
+echo "deb [arch=amd64] https://pkg.surfacelinux.com/debian release main" | sudo tee /etc/apt/sources.list.d/linux-surface.list
 
-sudo apt update
-
-sudo apt install linux-image-surface linux-headers-surface libwacom-surface iptsd
-
-sudo apt install linux-surface-secureboot-mok
-
+apt install linux-image-surface linux-headers-surface libwacom-surface iptsd linux-surface-secureboot-mok
 sudo update-grub
 
 
 #getting hot
+apt install tlp tlp-rdw
+tlp start
 
-sudo apt install tlp tlp-rdw
-sudo tlp start
+apt install cpufrequtils
+cpufreq-set -g powersave
 
-sudo apt install cpufrequtils
-sudo cpufreq-set -g powersave
+#Still not shutting down
+#Update GRUB and reboot:
+sudo nano /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi=force"
+sudo update-grub
