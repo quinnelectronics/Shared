@@ -48,6 +48,69 @@ sudo shutdown now
 sudo shutdown -h now acpi=force
 
 
+# More Troubleshooting Steps for Linux Mint Shutdown Issue on Surface Pro
+
+# 1. Force Filesystem Check on Reboot
+# Run the following commands to force a filesystem check on reboot.
+# Filesystem corruption can sometimes cause shutdown issues.
+sudo touch /forcefsck
+sudo reboot
+
+# 2. Update the Kernel
+# Sometimes, shutdown issues are related to kernel compatibility with hardware.
+# Updating to the latest stable Linux kernel may resolve the issue.
+sudo apt update
+sudo apt install linux-generic
+
+# Reboot to apply the new kernel, then try shutting down again.
+
+# 3. Examine Boot Logs for Errors
+# Reviewing logs may reveal if specific processes or hardware components are hanging.
+# Run this command to view logs from the last boot attempt.
+sudo journalctl -b -1
+
+# Look for any error messages near the end of the log.
+
+# 4. Check for Incomplete SystemD Shutdown Targets
+# If SystemD targets are failing, they might prevent shutdown.
+# Use this command to check for any stuck jobs.
+systemctl list-jobs
+
+# If you find any stuck jobs, you may need to force-stop them individually.
+
+# 5. Attempt Power Off from the SysRq Interface (Hardware-Level Shutdown)
+# The SysRq (Magic SysRq) key sequence works directly with the kernel
+# and bypasses most processes to force a shutdown.
+# Hold Alt + SysRq (Print Screen), then press O to power off the system.
+
+# 6. Reinstall Power Management Packages
+# If power management components are corrupted or incompatible,
+# reinstalling them can sometimes resolve shutdown issues.
+sudo apt install --reinstall acpi acpid
+sudo systemctl restart acpid
+
+# Try shutting down again after reinstalling the packages.
+
+# 7. Check for ACPI Compatibility in GRUB Configuration
+# Modify ACPI settings to work better with your device.
+# Edit the GRUB config file as follows:
+sudo nano /etc/default/grub
+
+# Find the line that begins with GRUB_CMDLINE_LINUX_DEFAULT
+# and add acpi=force or acpi=off as shown below:
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash acpi=force"
+
+# Save the file, update GRUB, and reboot:
+sudo update-grub
+sudo reboot
+
+# Notes:
+# If none of these steps resolve the shutdown issue, it may indicate
+# a deeper compatibility issue specific to Linux on Surface Pro.
+
+
+
+
 
 
 
