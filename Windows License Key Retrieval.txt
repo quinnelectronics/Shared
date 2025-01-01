@@ -15,17 +15,20 @@
 #######################################################
 
 # Windows Product Key Retrieval Script
-
 # This script retrieves the Windows product key, activation status, and licensing details, and outputs everything directly to the PowerShell terminal.
 
 # Function to retrieve the product key stored in the UEFI/BIOS
 function Get-OEMProductKey {
     Write-Host "Retrieving the OEM Product Key from UEFI/BIOS..." -ForegroundColor Cyan
-    $OEMKey = (wmic path SoftwareLicensingService get OA3xOriginalProductKey | findstr /v "OA3xOriginalProductKey").Trim()
-    if ($OEMKey) {
-        Write-Host "OEM Product Key: $OEMKey" -ForegroundColor Green
-    } else {
-        Write-Host "No OEM Product Key found in UEFI/BIOS." -ForegroundColor Yellow
+    try {
+        $OEMKey = (Get-WmiObject -Query "Select * from SoftwareLicensingService").OA3xOriginalProductKey
+        if ($OEMKey) {
+            Write-Host "OEM Product Key: $OEMKey" -ForegroundColor Green
+        } else {
+            Write-Host "No OEM Product Key found in UEFI/BIOS." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "An error occurred while retrieving the OEM product key." -ForegroundColor Red
     }
 }
 
@@ -69,3 +72,4 @@ Check-ActivationStatus
 Get-InstalledProductKey
 
 Write-Host "`nScript execution completed." -ForegroundColor White
+
