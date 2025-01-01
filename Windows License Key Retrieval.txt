@@ -1,11 +1,10 @@
  
 # Retrieve OEM Key
-
+Write-Host "OEM Key:" -ForegroundColor Cyan
 (Get-WmiObject -Query "Select * from SoftwareLicensingService").OA3xOriginalProductKey
 
-
 # Retrieve Product Key
-
+Write-Host "Product Key:" -ForegroundColor Cyan
 (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform").BackupProductKeyDefault
 
 
