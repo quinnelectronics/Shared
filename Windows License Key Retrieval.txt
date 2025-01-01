@@ -4,11 +4,13 @@
 PS C:\Windows\system32> wmic path SoftwareLicensingService get OA3xOriginalProductKey
 
 
-############################################
-### Windows Product Key Retrieval Script ###
-############################################
+#######################################################
+### Windows Product Key Retrieval PowerShell Script ###
+#######################################################
 
-# This script retrieves the Windows product key, activation status, and licensing details.
+# Windows Product Key Retrieval Script
+
+# This script retrieves the Windows product key, activation status, and licensing details, and outputs everything directly to the PowerShell terminal.
 
 # Function to retrieve the product key stored in the UEFI/BIOS
 function Get-OEMProductKey {
@@ -21,19 +23,30 @@ function Get-OEMProductKey {
     }
 }
 
-# Function to check the current activation status
+# Function to retrieve current activation status
 function Check-ActivationStatus {
-    Write-Host "`nChecking Windows activation status..." -ForegroundColor Cyan
-    slmgr /dlv | Out-Host
+    Write-Host "`nRetrieving Windows activation and license details..." -ForegroundColor Cyan
+    try {
+        $LicenseStatus = Get-WmiObject -Query "Select * from SoftwareLicensingProduct Where PartialProductKey != NULL"
+        foreach ($License in $LicenseStatus) {
+            Write-Host "Name: $($License.Name)" -ForegroundColor Green
+            Write-Host "License Status: $($License.LicenseStatus)" -ForegroundColor Green
+            Write-Host "Partial Product Key: $($License.PartialProductKey)" -ForegroundColor Green
+            Write-Host "Description: $($License.Description)" -ForegroundColor Green
+        }
+    } catch {
+        Write-Host "Failed to retrieve activation details." -ForegroundColor Red
+    }
 }
 
-# Function to retrieve the currently installed product key (if available)
+# Function to retrieve the currently installed product key
 function Get-InstalledProductKey {
     Write-Host "`nRetrieving the currently installed product key..." -ForegroundColor Cyan
     try {
-        $InstalledKey = (Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey
-        if ($InstalledKey) {
-            Write-Host "Installed Product Key: $InstalledKey" -ForegroundColor Green
+        $KeyPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform"
+        $DigitalProductId = (Get-ItemProperty -Path $KeyPath).BackupProductKeyDefault
+        if ($DigitalProductId) {
+            Write-Host "Installed Product Key: $DigitalProductId" -ForegroundColor Green
         } else {
             Write-Host "No installed product key could be retrieved." -ForegroundColor Yellow
         }
@@ -42,19 +55,11 @@ function Get-InstalledProductKey {
     }
 }
 
-# Function to display license information and backup
-function Display-LicenseDetails {
-    Write-Host "`nDisplaying detailed licensing information..." -ForegroundColor Cyan
-    slmgr /dli | Out-Host
-    slmgr /xpr | Out-Host
-}
-
 # Main Execution
 Write-Host "Windows Licensing Information Retrieval Script" -ForegroundColor White
 Write-Host "---------------------------------------------" -ForegroundColor White
 Get-OEMProductKey
 Check-ActivationStatus
 Get-InstalledProductKey
-Display-LicenseDetails
 
 Write-Host "`nScript execution completed." -ForegroundColor White
