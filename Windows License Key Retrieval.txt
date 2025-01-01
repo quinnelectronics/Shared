@@ -1,7 +1,8 @@
  
 # Retrieve Windows Original Product Key from manufacturer pre-installed embedded in UEFI/BIOS
 
-wmic path SoftwareLicensingService get OA3xOriginalProductKey
+(Get-WmiObject -Query "Select * from SoftwareLicensingService").OA3xOriginalProductKey
+
 
 # Retrieve Retail Key stored in Windows registry
 
