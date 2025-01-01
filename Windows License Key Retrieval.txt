@@ -1,10 +1,10 @@
  
-# Retrieve Windows Original Product Key from manufacturer pre-installed embedded in UEFI/BIOS
+# Retrieve OEM Key
 
 (Get-WmiObject -Query "Select * from SoftwareLicensingService").OA3xOriginalProductKey
 
 
-# Retrieve Retail Key stored in Windows registry
+# Retrieve Product Key
 
 (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform").BackupProductKeyDefault
 
