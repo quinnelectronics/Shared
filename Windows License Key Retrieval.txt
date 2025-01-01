@@ -3,9 +3,10 @@
 
 PS C:\Windows\system32> wmic path SoftwareLicensingService get OA3xOriginalProductKey
 
-##########################################################################################
 
-# Windows Product Key Retrieval Script
+############################################
+### Windows Product Key Retrieval Script ###
+############################################
 
 # This script retrieves the Windows product key, activation status, and licensing details.
 
