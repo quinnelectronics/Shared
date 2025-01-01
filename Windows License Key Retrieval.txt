@@ -1,4 +1,59 @@
+ 
+# Retrieve Windows Product Key
 
 PS C:\Windows\system32> wmic path SoftwareLicensingService get OA3xOriginalProductKey
 
+##########################################################################################
 
+# Windows Product Key Retrieval Script
+
+# This script retrieves the Windows product key, activation status, and licensing details.
+
+# Function to retrieve the product key stored in the UEFI/BIOS
+function Get-OEMProductKey {
+    Write-Host "Retrieving the OEM Product Key from UEFI/BIOS..." -ForegroundColor Cyan
+    $OEMKey = (wmic path SoftwareLicensingService get OA3xOriginalProductKey | findstr /v "OA3xOriginalProductKey").Trim()
+    if ($OEMKey) {
+        Write-Host "OEM Product Key: $OEMKey" -ForegroundColor Green
+    } else {
+        Write-Host "No OEM Product Key found in UEFI/BIOS." -ForegroundColor Yellow
+    }
+}
+
+# Function to check the current activation status
+function Check-ActivationStatus {
+    Write-Host "`nChecking Windows activation status..." -ForegroundColor Cyan
+    slmgr /dlv | Out-Host
+}
+
+# Function to retrieve the currently installed product key (if available)
+function Get-InstalledProductKey {
+    Write-Host "`nRetrieving the currently installed product key..." -ForegroundColor Cyan
+    try {
+        $InstalledKey = (Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey
+        if ($InstalledKey) {
+            Write-Host "Installed Product Key: $InstalledKey" -ForegroundColor Green
+        } else {
+            Write-Host "No installed product key could be retrieved." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "An error occurred while retrieving the installed product key." -ForegroundColor Red
+    }
+}
+
+# Function to display license information and backup
+function Display-LicenseDetails {
+    Write-Host "`nDisplaying detailed licensing information..." -ForegroundColor Cyan
+    slmgr /dli | Out-Host
+    slmgr /xpr | Out-Host
+}
+
+# Main Execution
+Write-Host "Windows Licensing Information Retrieval Script" -ForegroundColor White
+Write-Host "---------------------------------------------" -ForegroundColor White
+Get-OEMProductKey
+Check-ActivationStatus
+Get-InstalledProductKey
+Display-LicenseDetails
+
+Write-Host "`nScript execution completed." -ForegroundColor White
