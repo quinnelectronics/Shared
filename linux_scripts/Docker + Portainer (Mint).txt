@@ -1,0 +1,89 @@
+#!/bin/bash
+
+### Docker + Portainer Installation on Linux Mint
+### TQ 2024-12-14
+### Worked great !!!
+
+### docker_portainer_install.sh
+
+# Summary: This script automates the installation of Docker and Portainer on Linux Mint. 
+# It ensures that Portainer and future packages are installed in /robo-docker, creates all necessary directories, 
+# and grants the 'kr4b' account access to the directories and required groups for Docker functionality.
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Variables
+DOCKER_DIR="/docker"
+PORTAINER_DIR="$DOCKER_DIR/portainer/data"
+USER_ACCOUNT="ACCOUNT_NAME"
+
+# Create the /robo-docker directory and subdirectories for container data and set appropriate permissions
+sudo mkdir -p "$DOCKER_DIR/portainer/data"
+sudo mkdir -p "$DOCKER_DIR/containers"
+sudo mkdir -p "$DOCKER_DIR/volumes/shared"
+sudo mkdir -p "$DOCKER_DIR/backups"
+sudo mkdir -p "$DOCKER_DIR/scripts"
+
+# Change ownership of the /docker directory to the user
+sudo chown -R "$USER_ACCOUNT":"$USER_ACCOUNT" "$DOCKER_DIR"
+
+# Update the package list and install necessary prerequisites
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl
+
+# Add Docker's official GPG key
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the Docker APT repository
+. /etc/os-release
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $UBUNTU_CODENAME stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Update the package list again and install Docker
+sudo apt-get update -y
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Verify that Docker is installed correctly
+sudo docker --version
+
+
+
+# Add the kr4b user to the docker group
+sudo usermod -aG docker "$USER_ACCOUNT"
+
+# Install Portainer using Docker
+sudo docker run -d \
+  --name=portainer \
+  --restart=always \
+  -p 8000:8000 \
+  -p 9443:9443 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v "$PORTAINER_DIR":/data \
+  portainer/portainer-ce:latest
+
+# Ensure kr4b has access to Portainer files
+sudo chown -R "$USER_ACCOUNT":"$USER_ACCOUNT" "$PORTAINER_DIR"
+
+# Print completion message
+cat <<EOF
+
+============================================================
+Docker and Portainer installation complete!
+- Docker installed successfully.
+- Portainer is running on ports 8000 (HTTP) and 9443 (HTTPS).
+- Directories and permissions are set up in "$DOCKER_DIR".
+- The user "$USER_ACCOUNT" has been granted access to Docker and Portainer directories.
+============================================================
+
+Please log out and log back in for the group changes to take effect.
+
+EOF

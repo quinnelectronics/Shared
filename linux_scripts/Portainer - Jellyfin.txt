@@ -1,0 +1,53 @@
+# Step 1: Open Portainer
+# - Log in to your Portainer web interface.
+
+# Step 2: Navigate to the "Containers" Section
+# - Click on "Stacks" in the left-hand menu.
+
+# Step 3: Create a New Stack
+# - Click on "+ Add Stack".
+
+# Step 4: Name Your Stack
+# - Enter "jellyfin" as the name of the stack.
+
+# Step 5: Define the Stack Configuration
+# - Paste the following YAML configuration in the "Web editor" section.
+
+version: '3.8'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    network_mode: bridge
+    ports:
+      - 8096:8096 # Web UI port
+      - 8920:8920 # SSL port
+    volumes:
+      - /< DOCKER-DIR /docker >/containers/jellyfin/config:/config
+      - /< DOCKER-DIR /docker >/containers/jellyfin/cache:/cache
+      - /srv/< SHARE-DIR >/_Media:/ALL Movies TV Music # Last part is how name displays in Jellyfin
+    restart: unless-stopped
+    environment:
+      - TZ=America/Chicago # Set your timezone here
+
+
+# Step 6: Deploy the Stack
+# - Scroll down and click on "Deploy the stack".
+
+# Step 7: Wait for Deployment to Complete
+# - Wait for the containers to be created and started.
+
+# Step 8: Access Jellyfin
+# - Open a web browser and go to: http://<your-server-ip>:8096
+
+# Step 9: Initial Setup
+# - Follow the on-screen instructions to set up Jellyfin for the first time.
+
+# Notes:
+# - Ensure the /robo-docker directory has the proper permissions for Jellyfin to access the directories.
+# - Run 'chmod -R 755 /robo-docker' if necessary to set correct permissions.
+# - The "config" directory will store Jellyfin configuration files.
+# - The "cache" directory will store temporary cache files.
+# - The "media" directory will contain your media files.
+
+#if prompted for password. reset and refresh

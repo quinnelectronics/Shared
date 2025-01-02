@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Clear the screen
+clear
+
+# Start Cleanup
+echo "Starting Docker Cleanup..."
+
+# Remove unused images
+echo "Removing unused images..."
+docker image prune -a -f && echo "Unused images removed." || echo "Failed to remove unused images."
+
+# Remove unused volumes
+echo "Removing unused volumes..."
+docker volume prune -f && echo "Unused volumes removed." || echo "Failed to remove unused volumes."
+
+# Remove unused networks
+echo "Removing unused networks..."
+docker network prune -f && echo "Unused networks removed." || echo "Failed to remove unused networks."
+
+# Final cleanup summary
+echo "Docker cleanup completed."
+docker system df

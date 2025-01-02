@@ -1,0 +1,38 @@
+# Firefox Stack for Portainer
+
+---
+services:
+  firefox:
+    image: jlesage/firefox:latest
+    container_name: firefox
+    ports:
+      - '5800:5800/tcp'  # Port for web-based VNC access
+    volumes:
+      - /< DOCKER-DIR /docker >/containers/firefox:/config  # Path where Firefox configuration will be stored
+    environment:
+      - TZ=America/Chicago  # Set your local timezone
+      - USER_ID=1000        # Set user ID (optional, change as needed)
+      - GROUP_ID=1000       # Set group ID (optional, change as needed)
+      - DISPLAY_WIDTH=1280  # Set display width (optional, change as needed)
+      - DISPLAY_HEIGHT=720  # Set display height (optional, change as needed)
+    restart: always  # Always restart if the container stops
+---
+
+# Instructions to Deploy the Firefox Stack in Portainer
+
+# 1. Open Portainer.
+# 2. Click **Stacks** in the left sidebar.
+# 3. Click **Add stack** at the top-right.
+# 4. Name the stack: firefox
+# 5. Paste the above Docker Compose YAML into the stack editor.
+# 6. Click **Deploy the stack**.
+# 7. Wait for the container to be created and started.
+
+# Accessing Firefox
+# 1. Open a web browser and navigate to http://<your-server-ip>:5800.
+# 2. You will see a web-based VNC window with Firefox running inside.
+
+# Notes
+# - If you want to change the port, update `5800:5800` to another port (like 5900) to avoid conflicts.
+# - You can change the display resolution by editing `DISPLAY_WIDTH` and `DISPLAY_HEIGHT`.
+# - The Firefox profile (history, bookmarks, etc.) will be stored in `/robo-docker/containers/firefox`, so your data will persist.
