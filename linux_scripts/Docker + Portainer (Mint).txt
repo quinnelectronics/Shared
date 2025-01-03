@@ -2,13 +2,15 @@
 
 ### Docker + Portainer Installation on Linux Mint
 ### TQ 2024-12-14
-### Worked great !!!
 
-### docker_portainer_install.sh
+### FILE_NAME = docker_portainer_install.sh
+### sudo chmod +x docker_portainer_install.sh
+### sudo ./docker_portainer_install.sh
 
-# Summary: This script automates the installation of Docker and Portainer on Linux Mint. 
-# It ensures that Portainer and future packages are installed in /robo-docker, creates all necessary directories, 
-# and grants the 'kr4b' account access to the directories and required groups for Docker functionality.
+# Summary:
+# This script automates the installation of Docker and Portainer on Linux Mint
+# It ensures that Portainer and future packages are installed in the docker directory defined, creates all necessary directories
+# Grants the user account access to the directories and required groups for Docker functionality
 
 # Exit immediately if a command exits with a non-zero status
 set -e
