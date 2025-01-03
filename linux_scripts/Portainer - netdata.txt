@@ -17,7 +17,7 @@ services:
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
-    hostname: ${HOSTNAME}
+    hostname: < ${HOSTNAME} >
     ports:
       - 19999:19999
     restart: unless-stopped
